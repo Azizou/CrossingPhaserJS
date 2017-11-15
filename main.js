@@ -3,7 +3,10 @@ var jumpButton;
 var spacefield;
 var spacedv;
 var requiredToWin = 4;
+var currentLevel = 1;
 var height = 600;
+var width = 400;
+var blockSize = 20;
 // Create the state that will contain the whole game
 var mainState = {
     preload: function () {
@@ -11,7 +14,9 @@ var mainState = {
         game.load.image('player', 'assets/player.png');
         game.load.image('wall', 'assets/wall.png');
         game.load.image('win', 'assets/win.png');
+        game.load.image('tickWall', 'assets/tickWall2.png');
         game.load.image('enemy', 'assets/enemy.png');
+        game.load.json('levels', 'data/levels.json')
         // Here we preload the assets
     },
 
@@ -23,6 +28,8 @@ var mainState = {
         game.stage.backgroundColor = '#3598db';
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.world.enableBody = true;
+        this.levels = game.cache.getJSON('levels');
+        this.currentLevel = 1;
 
         // Variable to store the arrow key pressed
         this.cursor = game.input.keyboard.createCursorKeys();
@@ -35,7 +42,9 @@ var mainState = {
         //        this.coins = game.add.group();
         this.trucks = game.add.group();
         this.wins = game.add.group();
-        var level = [
+        this.tickWalls = game.add.group();
+        var level = this.levels[currentLevel];
+        var levela = [
             'oooooooooooooooooooo',
             'xxxxxxxxxxxxxxxxxxxx',
             '  eeee    eee   eeee  ',
@@ -51,24 +60,28 @@ var mainState = {
             ' eeee   eeee   eeee  ',
             'xxxxxxxxxxxxxxxxxxxx'
         ];
-        this.yOffset = height - 20*level.length - 60;
+        this.yOffset = height - blockSize*level.length - 3*blockSize;
         for (var i = 0; i < level.length; i++) {
             for (var j = 0; j < level[i].length; j++) {
 
                 // Create a wall and add it to the 'walls' group
                 if (level[i][j] == 'x') {
-                    var wall = game.add.sprite(20 * j,  this.yOffset + 20 * i, 'wall');
+                    var wall = game.add.sprite(blockSize * j,  this.yOffset + blockSize * i, 'wall');
                     this.walls.add(wall);
                 }
                 else if (level[i][j] == 'o') {
-                    var win = game.add.sprite(20 * j, this.yOffset + 20 * i, 'win');
-                    this.wins.add(win);// can hold up to 20 wins
+                    var win = game.add.sprite(blockSize * j, this.yOffset + blockSize * i, 'win');
+                    this.wins.add(win);// can hold up to blockSize wins
+                }
+                else if (level[i][j] == 'w') {
+                    var tickWall = game.add.sprite(blockSize * j, this.yOffset + blockSize * i, 'tickWall');
+                    this.tickWalls.add(tickWall);// can hold up to blockSize wins
                 }
                 
                 // Create a enemy and add it to the 'enemies' group
                 else if (level[i][j] == 'e') {
-                    const initialX = (i % 4 == 0) ? 420 : -420;
-                    var enemy = game.add.sprite(-20 + 20 * j, this.yOffset + 20 * i, 'enemy');
+                    const initialX = ((i-1) % 4 == 0) ? (width + blockSize) : -(width + blockSize);
+                    var enemy = game.add.sprite(-blockSize + blockSize * j, this.yOffset + blockSize * i, 'enemy');
                     //                    enemy.body.velocity.x = 50;
                     enemy.speed = initialX;
                     this.trucks.add(enemy);
@@ -87,22 +100,22 @@ var mainState = {
             this.player.body.x -= 5;
         }
         else if(this.cursor.up.downDuration(20)){
-            this.player.body.y -= 20;
+            this.player.body.y -= blockSize;
         }
 
         //        spacefield.tilePosition.y += spacedv;
         for (var i = 0; i < this.trucks.length; i++) {
             if (this.trucks.getAt(i).speed < 0) {
-                if (this.trucks.getAt(i).body.x < 400)
+                if (this.trucks.getAt(i).body.x < width)
                     this.trucks.getAt(i).body.x += speed;
                 else
-                    this.trucks.getAt(i).body.x -= 420;
+                    this.trucks.getAt(i).body.x -= width + blockSize;
             }
             else {
-                if (this.trucks.getAt(i).body.x > -20)
+                if (this.trucks.getAt(i).body.x > -blockSize)
                     this.trucks.getAt(i).body.x -= speed;
                 else
-                    this.trucks.getAt(i).body.x += 420;
+                    this.trucks.getAt(i).body.x += width + blockSize;
 
             }
 
@@ -118,7 +131,7 @@ var mainState = {
             this.wins.getAt(this.winCount - 1).key = 'player';
             this.wins.getAt(this.winCount - 1).loadTexture('player',0);
             console.log(this.wins.getAt(this.winCount - 1)); 
-            player.body.x = 200;
+            player.body.x = width/2;
             player.body.y = height - 60 ;
         }
         else{
@@ -132,8 +145,8 @@ var mainState = {
     // Function to restart the game
     restart: function (player) {
         // game.state.start('main');
-        player.body.x = 200;
-        player.body.y = height - 60 ;
+        player.body.x = width/2;
+        player.body.y = height - 3*blockSize ;
     },
     loadLevel: function () {
     }
@@ -141,6 +154,6 @@ var mainState = {
 };
 
 // Initialize the game and start our state
-var game = new Phaser.Game(400, 600,'gameContainer');
+var game = new Phaser.Game(width, 600,'gameContainer');
 game.state.add('main', mainState);
 game.state.start('main');

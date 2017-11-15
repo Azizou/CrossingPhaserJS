@@ -125,12 +125,12 @@ var mainState = {
     },
 
     // Function to kill a coin
-    achieved: function (player, coin) {
+    achieved: function (player, slot) {
         this.winCount++;
         if(this.winCount<requiredToWin){
-            this.wins.getAt(this.winCount - 1).key = 'player';
-            this.wins.getAt(this.winCount - 1).loadTexture('player',0);
-            console.log(this.wins.getAt(this.winCount - 1)); 
+            slot.key = 'player';
+            slot.loadTexture('player',0);
+            // console.log(this.wins.getAt(this.winCount - 1)); 
             player.body.x = width/2;
             player.body.y = height - 60 ;
         }
@@ -157,3 +157,14 @@ var mainState = {
 var game = new Phaser.Game(width, 600,'gameContainer');
 game.state.add('main', mainState);
 game.state.start('main');
+
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// create Oscillator node
+var oscillator = audioCtx.createOscillator();
+
+oscillator.type = 'sine';
+oscillator.frequency.value = 1320; // value in hertz
+oscillator.connect(audioCtx.destination);
+oscillator.start();
+setTimeout(()=> {oscillator.stop()},2000)

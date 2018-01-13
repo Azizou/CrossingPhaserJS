@@ -29,7 +29,7 @@ var mainState = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.world.enableBody = true;
         this.levels = game.cache.getJSON('levels');
-        this.currentLevel = 1;
+        this.currentLevel = 3;
 
         // Variable to store the arrow key pressed
         this.cursor = game.input.keyboard.createCursorKeys();
@@ -49,10 +49,10 @@ var mainState = {
             'xxxxxxxxxxxxxxxxxxxx',
             '  eeee    eee   eeee  ',
             'xxxxxxxxxxxxxxxxxxxx',
-            // 'eeee   eeee   eeee  ee',
-            // 'xxxxxxxxxxxxxxxxxxxx',
-            // '   eeee   eeee  eeeee',
-            // 'xxxxxxxxxxxxxxxxxxxx',
+            'eeee   eeee   eeee  ee',
+            'xxxxxxxxxxxxxxxxxxxx',
+            '   eeee   eeee  eeeee',
+            'xxxxxxxxxxxxxxxxxxxx',
             'eeee   eeee   eeee',
             'xxxxxxxxxxxxxxxxxxxx',
             '   eeee   eeee  eeeee',
@@ -158,13 +158,13 @@ var game = new Phaser.Game(width, 600,'gameContainer');
 game.state.add('main', mainState);
 game.state.start('main');
 
-var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+// var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-// create Oscillator node
-var oscillator = audioCtx.createOscillator();
+// // create Oscillator node
+// var oscillator = audioCtx.createOscillator();
 
-oscillator.type = 'sine';
-oscillator.frequency.value = 1320; // value in hertz
-oscillator.connect(audioCtx.destination);
-oscillator.start();
-setTimeout(()=> {oscillator.stop()},2000)
+// oscillator.type = 'sine';
+// oscillator.frequency.value = 1320; // value in hertz
+// oscillator.connect(audioCtx.destination);
+// oscillator.start();
+// setTimeout(()=> {oscillator.stop()},2000)

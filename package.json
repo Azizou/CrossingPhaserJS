@@ -1,0 +1,27 @@
+{
+  "name": "crossingphaserjs",
+  "version": "1.0.0",
+  "description": "A Frogger like game implemented in phaser",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azizou/CrossingPhaserJS.git"
+  },
+  "author": "Azizou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Azizou/CrossingPhaserJS/issues"
+  },
+  "homepage": "https://github.com/Azizou/CrossingPhaserJS#readme",
+  "devDependencies": {
+    "karma": "^2.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-phantomjs-launcher": "^1.0.4"
+  },
+  "dependencies": {
+    "karma-jasmine": "^1.1.1"
+  }
+}

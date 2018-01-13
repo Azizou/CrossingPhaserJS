@@ -4,7 +4,9 @@
   "description": "A Frogger like game implemented in phaser",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "babel": "babel --presets es2015 js/main.js -o build/main.bundle.js",
+    "start": "http-server",
+    "webpack": "webpack"
   },
   "repository": {
     "type": "git",
@@ -17,9 +19,13 @@
   },
   "homepage": "https://github.com/Azizou/CrossingPhaserJS#readme",
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
-    "karma-phantomjs-launcher": "^1.0.4"
+    "karma-phantomjs-launcher": "^1.0.4",
+    "phaser": "^2.6.2"
   },
   "dependencies": {
     "karma-jasmine": "^1.1.1"
